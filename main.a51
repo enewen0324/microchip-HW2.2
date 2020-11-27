@@ -67,12 +67,15 @@ kama:
     MOV R0,#006H 
 action:
     PUSH 0
+	;DEC R0
     MOV A,R1
-    ANL A,#0FEH
+    ORL A,#0FEH
+loop_start:
+	djnz R0,loop
+	ajmp fi_rotate
 loop:
-    djnz R0,fi_rotate
     RL A
-    AJMP loop
+    AJMP loop_start
 fi_rotate:
     POP 0
     INC R0
