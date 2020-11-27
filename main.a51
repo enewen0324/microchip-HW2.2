@@ -45,7 +45,7 @@ seven_level:
     PUSH 7
 
     MOV R0,20H
-    MOV 1,@R0 ;7th varible module pattarn
+    MOV 1,@R0 ;7th varible, module pattarn
     DEC R0
     MOV 2,@R0 ;6th varible, 6th number
     DEC R0
@@ -66,9 +66,19 @@ kama:
     PUSH 0
     MOV R0,#006H 
 action:
+    PUSH 0
+    MOV A,R1
+    ANL A,#0FEH
+loop:
+    djnz R0,fi_rotate
+    RL A
+    AJMP loop
+fi_rotate:
+    POP 0
     INC R0
-    MOV P1,R1
+    MOV P1,A
     MOV P2,@R0
+    
     ACALL short_pause
     DEC R0
     djnz R0,action
