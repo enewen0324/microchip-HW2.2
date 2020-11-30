@@ -3,6 +3,11 @@ main:
     ACALL reset
     MOV SP,#04FH
     MOV 20H,#20H
+	
+    MOV R0,#006H
+loop:
+    PUSH 0
+    
     MOV R0,20H
     INC R0
     MOV @R0,#05H ;first number
@@ -32,6 +37,47 @@ main:
     MOV @R0,#0FFH
     MOV 20H,R0
     ACALL seven_level
+    
+    POP 0
+    djnz R0 ,loop
+	
+    MOV R0,#006H
+loop3:
+    PUSH 0
+    
+    MOV R0,20H
+    INC R0
+    MOV @R0,#01H ;first number
+    INC R0
+    MOV @R0,#01H ;second number
+    INC R0
+    MOV @R0,#01H ;third number
+    INC R0
+    MOV @R0,#05H ;fourth number
+    INC R0
+    MOV @R0,#05H ;fiveth number
+    INC R0
+    MOV @R0,#05H ;sixth number
+    INC R0
+    MOV @R0,#038H ;module pattarn. If it is #0FFH, 1-6 number is dont care; 
+    MOV 20H,R0
+    ACALL seven_level
+	
+    MOV R0,20H
+    INC R0 ;first number, dont care
+    INC R0 ; dont care
+    INC R0 ; dont care
+    INC R0 ; dont care
+    INC R0 ; dont care
+    INC R0 ; dont care
+    INC R0 ; dont care
+    MOV @R0,#007H
+    MOV 20H,R0
+    ACALL seven_level
+    
+    POP 0
+    djnz R0 ,loop3
+    
     LJMP endl
 
 seven_level:
@@ -67,15 +113,15 @@ kama:
     MOV R0,#006H 
 action:
     PUSH 0
-	;DEC R0
-    MOV A,R1
-    ORL A,#0FEH
-loop_start:
-	djnz R0,loop
-	ajmp fi_rotate
-loop:
+    MOV A,#0FEH
+loop_start2:
+    djnz R0,loop2
+    ajmp next
+loop2:
     RL A
-    AJMP loop_start
+    AJMP loop_start2
+next:	
+    ORL A,R1
 fi_rotate:
     POP 0
     INC R0
@@ -102,7 +148,7 @@ short_pause:
     PUSH 0
     PUSH 1
 s_pause2:
-	MOV R0,#010H
+    MOV R0,#010H
     MOV R1,#0FFH
 s_pause:
     PUSH 1
